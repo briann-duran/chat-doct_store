@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  ollama:
+    build: .
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    entrypoint: ["/usr/bin/bash", "/pull-llama3.sh"]
+
+volumes:
+  ollama_data:

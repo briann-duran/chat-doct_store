@@ -1,12 +1,22 @@
-./bin/ollama serve &
+# Comprobar si Ollama ya está corriendo
+if pgrep -x "ollama" > /dev/null
+then
+    echo "Ollama ya está corriendo"
+else
+    ./bin/ollama serve &
+    pid=$!
+    sleep 5
+fi
 
-pid=$!
+# Descargar el modelo mistral si no está disponible
+echo "Descargando modelo mistral..."
+ollama pull mistral
 
-sleep 5
+# Descargar los modelos adicionales
+echo "Descargando modelos adicionales..."
+ollama pull mxbai-embed-large
+ollama pull nomic-embed-text
 
-
-echo "Pulling llama3 model"
-ollama pull llama3.2:1b
-
-
+# Esperar a que Ollama termine de iniciar
 wait $pid
+echo "Ollama finalizado"
